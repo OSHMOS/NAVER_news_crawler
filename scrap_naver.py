@@ -1,6 +1,9 @@
 import csv
+import time
 import requests
 from bs4 import BeautifulSoup
+
+start = time.time()
 
 csv_file = open('북한인권정보센터 기사 스크랩_naver.csv', 'w')
 csv_writer = csv.writer(csv_file)
@@ -26,3 +29,5 @@ while True:
 
     LIMIT += 1
 csv_file.close()
+end = time.time()
+print(f'time : {end - start}')  # time : 117.44386577606201 sec

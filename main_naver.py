@@ -4,6 +4,8 @@ import csv
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+start = time.time()
+
 csv_file = open('북한인권정보센터 기사 스크랩_naver.csv', 'w')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['기사 제목', '기사 링크'])
@@ -50,4 +52,6 @@ while True:
     else:
         break
 csv_file.close()
+end = time.time()
+print(f'time : {end - start}')  # time : 1000.122661113739 sec
 driver.quit()
