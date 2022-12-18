@@ -13,12 +13,12 @@ def news_scrap():
 
     LIMIT = 0
 
-    print('안녕하세요. 오스모스가 개발한 네이버 뉴스 크롤러입니다.')
-    query = input('네이버 뉴스 키워드를 입력해주세요. : ')
+    print('안녕하세요. 오스모스가 제작한 네이버 뉴스 크롤러입니다.')
+    query = input('모으고 싶은 네이버 뉴스 키워드를 입력해주세요. : ')
 
     while True:
         url = f'https://search.naver.com/search.naver?where=news&sm=tab_pge&query={query}&sort=1&photo=0&field=0&pd=0&ds=&de=&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:dd,p:all,a:all&start={LIMIT}1'
-        if 'start=3991' in url:  # 네이버는 기사를 최대 4,000건까지만 제공한다.
+        if 'start=4001' in url:  # 네이버는 기사를 최대 4,000건까지만 제공한다.
             break
 
         response = requests.get(url)
@@ -35,8 +35,8 @@ def news_scrap():
         LIMIT += 1
     csv_file.close()
     end = time.time()
-    print(f'{end - start}초가 걸렸습니다.')
-    print("'네이버 뉴스 스크랩.csv'를 시작 버튼을 눌러 검색해주세요.")
+    print(f'현재 환경에서는 {end - start}초가 걸립니다.')
+    print("'네이버 뉴스 스크랩.csv'를 윈도우는 시작에서 맥은 Finder에서 검색해주세요.")
 
 
 if __name__ == '__main__':
