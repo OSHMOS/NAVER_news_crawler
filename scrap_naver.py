@@ -41,7 +41,7 @@ def news_scrap():
                 date = span[-1].get_text()
             else:
                 date = span[0].get_text()
-            if '분 전' in date or '일 전' in date:
+            if '분 전' in date or '시간 전' in date or '일 전' in date:
                 date = datetime.now().date()
             csv_writer.writerow([title, link, press, date])
 
