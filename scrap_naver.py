@@ -1,6 +1,7 @@
 import csv
 import time
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 
@@ -9,7 +10,7 @@ def news_scrap():
 
     csv_file = open('네이버 뉴스 스크랩.csv', 'w')
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['뉴스 제목', '뉴스 링크'])
+    csv_writer.writerow(['뉴스 제목', '뉴스 링크', '언론사', '날짜'])
 
     LIMIT = 0
 
@@ -27,13 +28,26 @@ def news_scrap():
         soup = BeautifulSoup(search_page, 'html.parser')
 
         news_titles = soup.select('a.news_tit')
-        for news_title in news_titles:
+        info_group = soup.select('div.info_group')
+        info_groups = soup.select('a.info.press')
+        info_list = soup.select('span.info')
+        for news_title, info in zip(news_titles, info_group):
             title = news_title.get_text()
             link = news_title.get('href')
-            csv_writer.writerow([title, link])
+            a = info.select_one('a.info.press')
+            press = a.get_text()
+            span = info.select('span.info')
+            if len(span) > 1:
+                date = span[-1].get_text()
+            else:
+                date = span[0].get_text()
+            if '분 전' in date or '일 전' in date:
+                date = datetime.now().date()
+            csv_writer.writerow([title, link, press, date])
 
         LIMIT += 1
     csv_file.close()
+
     end = time.time()
     print(f'현재 환경에서는 {end - start}초가 걸립니다.')
     print("'네이버 뉴스 스크랩.csv'를 윈도우는 시작에서 맥은 Finder에서 검색해주세요.")
