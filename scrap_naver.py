@@ -29,20 +29,24 @@ def news_scrap():
 
         news_titles = soup.select('a.news_tit')
         info_group = soup.select('div.info_group')
-        info_groups = soup.select('a.info.press')
-        info_list = soup.select('span.info')
         for news_title, info in zip(news_titles, info_group):
             title = news_title.get_text()
             link = news_title.get('href')
             a = info.select_one('a.info.press')
             press = a.get_text()
             span = info.select('span.info')
+
             if len(span) > 1:
-                date = span[-1].get_text()
+                date = span[-1].get_text().replace('.', '-').rstrip('-')
             else:
-                date = span[0].get_text()
-            if '분 전' in date or '시간 전' in date or '일 전' in date:
-                date = datetime.now().date()
+                date = span[0].get_text().replace('.', '-').rstrip('-')
+                
+
+            if '분 전' in date or '시간 전' in date:
+                date = f'{datetime.now().year}-{datetime.now().month}-{datetime.now().day}'
+            elif '일 전' in date and int(date[0]) > 0:
+                date = f'{datetime.now().year}-{datetime.now().month}-{datetime.now().day - int(date[0])}'
+
             csv_writer.writerow([title, link, press, date])
 
         LIMIT += 1
